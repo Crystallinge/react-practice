@@ -18,7 +18,12 @@ module.exports = {
     rules: [
       {
         test: /\.[tj]sx?$/,
-        use: [{ loader: "ts-loader" }],
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
       },
     ],
   },
