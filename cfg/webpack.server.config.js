@@ -25,6 +25,22 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                mode: "local",
+                localIdentName: "[name]__[local]--[hash:base64:5]",
+              },
+              // onlyLocals: true,
+            },
+          },
+          "sass-loader",
+        ],
+      },
     ],
   },
   optimization: {
