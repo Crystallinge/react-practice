@@ -1,6 +1,7 @@
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const NODE_ENV = process.env.NODE_ENV;
+const GLOBAL_SCSS_REGEXP = /\.global\.scss$/;
 
 module.exports = {
   target: "node",
@@ -11,7 +12,7 @@ module.exports = {
     filename: "server.js",
   },
   resolve: {
-    extensions: [".js", ".jsx", ".json"],
+    extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
   externals: [nodeExternals()],
   module: {
@@ -24,6 +25,27 @@ module.exports = {
             presets: ["@babel/preset-env", "@babel/preset-react"],
           },
         },
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                mode: "local",
+                localIdentName: "[name]__[local]--[hash:base64:5]",
+              },
+              // onlyLocals: true,
+            },
+          },
+          "sass-loader",
+        ],
+        exclude: GLOBAL_SCSS_REGEXP,
+      },
+      {
+        test: GLOBAL_SCSS_REGEXP,
+        use: ["css-loader"],
       },
     ],
   },
